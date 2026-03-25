@@ -1,20 +1,16 @@
 # Development
 
-## Tooling
-
-- `direnv` loads the repo environment through `.envrc`
-- `nix` provides the pinned development shell
-- `Foundry` is the Solidity toolchain
-- `just` is the canonical command runner
-
-## First-time setup
+## Local workflow
 
 ```sh
 direnv allow
 just bootstrap
 ```
 
-## Common commands
+`.envrc` loads the Nix flake automatically when you enter the repository.
+After that, run project commands through `just`.
+
+## Commands
 
 ```sh
 just build
@@ -25,8 +21,6 @@ just slither
 just check
 ```
 
-## Notes
+## CI
 
-- Run commands through `just` to keep local usage aligned with CI.
-- Solidity dependencies are installed under `lib/` using Foundry.
-- CI runs the same checks through Nix and GitHub Actions.
+CI keeps Nix explicit and runs the same commands through `just`.

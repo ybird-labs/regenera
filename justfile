@@ -6,27 +6,26 @@ default:
 bootstrap:
   command -v direnv >/dev/null
   command -v nix >/dev/null
-  command -v just >/dev/null
-  nix develop -c forge --version
-  nix develop -c slither --version
+  direnv exec . forge --version
+  direnv exec . slither --version
 
 build:
-  nix develop -c forge build
+  forge build
 
 test:
-  nix develop -c forge test
+  forge test
 
 fmt:
-  nix develop -c forge fmt
+  forge fmt
 
 fmt-check:
-  nix develop -c forge fmt --check
+  forge fmt --check
 
 clean:
-  nix develop -c forge clean
+  forge clean
 
 slither:
-  nix develop -c slither .
+  slither .
 
 check: fmt-check build test slither
 
