@@ -18,6 +18,7 @@
             foundry
             git
             jq
+            just
             nodejs_22
             python3
             slither-analyzer

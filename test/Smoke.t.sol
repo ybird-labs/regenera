@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.28;
 
-import {Test} from "forge-std/Test.sol";
+import { Test } from "forge-std/Test.sol";
 
-import {Smoke} from "src/Smoke.sol";
+import { Smoke } from "src/Smoke.sol";
 
 contract SmokeTest is Test {
     Smoke internal smoke;
