@@ -15,6 +15,9 @@ build:
 test:
   forge test
 
+validate-config:
+  CONFIG_PATH=${CONFIG_PATH:-config/local.json} forge script script/ValidateConfig.s.sol:ValidateConfigScript
+
 fmt:
   forge fmt
 

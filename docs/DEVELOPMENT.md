@@ -19,7 +19,14 @@ just fmt
 just fmt-check
 just slither
 just check
+CONFIG_PATH=config/local.json forge script script/ValidateConfig.s.sol:ValidateConfigScript
 ```
+
+## Config
+
+- Put chain-specific values in `config/`
+- Keep secrets in the environment, not in committed JSON files
+- Use `config/example.json` as the shape reference
 
 ## CI
 
