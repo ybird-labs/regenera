@@ -1,0 +1,31 @@
+{
+  description = "Reproducible development shell for regenera";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+  };
+
+  outputs = { self, nixpkgs, flake-utils }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+        };
+      in {
+        devShells.default = pkgs.mkShell {
+          packages = with pkgs; [
+            foundry
+            git
+            jq
+            nodejs_22
+            python3
+            slither-analyzer
+          ];
+
+          shellHook = ''
+            echo "Entering regenera dev shell"
+          '';
+        };
+      });
+}
