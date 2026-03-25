@@ -27,6 +27,22 @@ pragma solidity 0.8.28;
 ///        ClassCreatorAllowlist, AllowedClassCreator, ClassFee, AllowedBridgeChain,
 ///        ProjectFee (state.proto)        -> simple mappings/variables in contract storage,
 ///                                           no struct needed
+///
+///      Numeric keys use UDVTs (User Defined Value Types) over uint256 for
+///      zero-cost type safety: a ClassKey cannot be passed where a ProjectKey
+///      is expected, preventing key confusion bugs at compile time.
+///      No major protocol uses this exact pattern for auto-increment row IDs,
+///      but UDVTs over uint256/bytes32/address are standard practice
+///      (Uniswap v4 PoolId, Currency; OpenZeppelin Delay, ShortString).
+
+/// @notice Type-safe key for credit class table rows.
+type ClassKey is uint256;
+
+/// @notice Type-safe key for project table rows.
+type ProjectKey is uint256;
+
+/// @notice Type-safe key for credit batch table rows.
+type BatchKey is uint256;
 
 /// @notice Project enrollment lifecycle states.
 /// @dev Maps to regen.ecocredit.v1.ProjectEnrollmentStatus
@@ -57,7 +73,7 @@ struct CreditType {
 struct Class {
     // key is the table row identifier of the credit class used internally for
     // efficient lookups. This identifier is auto-incrementing.
-    uint256 key;
+    ClassKey key;
     // id is the unique identifier of the credit class auto-generated from the
     // credit type abbreviation and the credit class sequence number.
     string id; // format: {abbrev}{seq:02d}, e.g. "C01"
@@ -74,7 +90,7 @@ struct Class {
 struct Project {
     // key is the table row identifier of the project used internally for
     // efficient lookups. This identifier is auto-incrementing.
-    uint256 key;
+    ProjectKey key;
     // id is the unique identifier of the project either auto-generated from the
     // credit class id and project sequence number or provided upon creation.
     string id; // format: {classId}-{seq:03d}, e.g. "C01-001"
@@ -82,7 +98,7 @@ struct Project {
     address admin;
     // class_key is the table row identifier of the credit class used internally
     // for efficient lookups. This links a project to a credit class.
-    uint256 classKey;
+    ClassKey classKey;
     // jurisdiction is the jurisdiction of the project.
     // Full documentation can be found in MsgCreateProject.jurisdiction.
     string jurisdiction; // ISO 3166-2: {CC}[-{region}[ {postal}]]
@@ -97,13 +113,13 @@ struct Project {
 struct Batch {
     // key is the table row identifier of the credit batch used internally for
     // efficient lookups. This identifier is auto-incrementing.
-    uint256 key;
+    BatchKey key;
     // issuer is the address that created the batch and which is
     // authorized to mint more credits if open=true.
     address issuer; // immutable after creation
-    // project_key is the table row identifier of the credit class used internally
+    // project_key is the table row identifier of the project used internally
     // for efficient lookups. This links a credit batch to a project.
-    uint256 projectKey;
+    ProjectKey projectKey;
     // denom is the unique identifier of the credit batch formed from the
     // project id, the batch sequence number, and the start and
     // end date of the credit batch.
@@ -123,7 +139,7 @@ struct Batch {
     bool open;
     // class_key is the table row identifier of the credit class used internally
     // for efficient lookups. This links a batch to a credit class.
-    uint256 classKey;
+    ClassKey classKey;
 }
 
 /// @notice Per-account balance for a specific credit batch.
@@ -134,7 +150,7 @@ struct Batch {
 struct BatchBalance {
     // batch_key is the table row identifier of the credit batch used internally
     // for efficient lookups. This links a balance to a credit batch.
-    uint256 batchKey;
+    BatchKey batchKey;
     // Proto field is `bytes address`. Renamed to `holder` because `address`
     // is a reserved keyword in Solidity (it is a type name).
     address holder;
@@ -157,7 +173,7 @@ struct BatchBalance {
 struct BatchSupply {
     // batch_key is the table row identifier of the credit batch used internally
     // for efficient lookups. This links supply to a credit batch.
-    uint256 batchKey;
+    BatchKey batchKey;
     // tradable_amount is the total number of tradable credits in the batch.
     uint256 tradableAmount;
     // retired_amount is the total number of retired credits in the batch.
