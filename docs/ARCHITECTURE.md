@@ -1,8 +1,15 @@
 # Architecture Notes
 
-This workspace is intended for an advanced protocol targeting EVM-compatible
-chains with chain-specific deployment details isolated from core contract
-logic.
+This document is a placeholder for protocol architecture decisions.
 
-Detailed architecture, roles, invariants, and threat modeling will be added in
-later setup steps.
+It should be used to capture:
+
+- system boundaries
+- core modules and responsibilities
+- privileged components
+- external dependencies and adapters
+- upgradeability decisions
+- chain-specific integration boundaries
+
+Until the protocol design is defined, architecture details should stay out of
+the root `README.md` and live here instead.
