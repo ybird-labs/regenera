@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.28;
 
-import {console2} from "forge-std/console2.sol";
+import { console2 } from "forge-std/console2.sol";
 
-import {BaseConfigScript} from "script/BaseConfig.s.sol";
+import { BaseConfigScript } from "script/BaseConfig.s.sol";
 
 contract ValidateConfigScript is BaseConfigScript {
     function run() external view {
